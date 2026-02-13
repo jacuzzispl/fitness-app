@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fitness App</title>
+</head>
+<body>
+    <h1>Add workout</h1>
+    <form id="workoutForm">
+        <input id="workoutName" placeholder="Workout Name" required/>
+        <input id="workoutDate" type="date" required/>
+        <button onclick="submitWorkout()">Create Workout</button>
+    </form>
+
+    <h2>Exercise</h2>
+    <form id="exerciseForm">
+        <input id="exerciseName" placeholder="Exercise Name" required disabled/>
+        <input id="sets" type="number" placeholder="Sets" required disabled/>
+        <input id="reps" type="number" placeholder="Reps" required disabled/>
+        <input id="weight" type="number" placeholder="Weight" required disabled/>
+    </form>
+        <button onclick="submitExercise()">Add Exercise to Workout</button>
+
+    <script src="/static/app.js"></script>
+</body>
+</html>
