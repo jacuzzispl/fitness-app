@@ -7,7 +7,7 @@ from pydantic import BaseModel
 import sqlite3
 
 app = FastAPI()
-app.mount("/static", StaticFiles(directory="/Users/atunwa/something/static"), name="static")
+app.mount("/static", StaticFiles(directory="/Users/atunwa/fitness app/static"), name="static")
 templates = Jinja2Templates(directory="templates")
 
 class Exercise(BaseModel):
@@ -27,6 +27,7 @@ PostResponse = Union[Exercise, Workout]
 
 
 def init_db():
+    print("The database has been initialised")
     conn = sqlite3.connect("database.db")
     conn.row_factory = sqlite3.Row
     cursor = conn.cursor()
@@ -64,12 +65,11 @@ def get_db():
     finally:
         conn.close()
 
-init_db()
-
 
 @app.get("/")
 def home():
-    return FileResponse("index.html")
+    init_db()
+    return FileResponse("/Users/atunwa/fitness app/templates/index.html")
 
 @app.post("/workouts")
 def add_workout(data: PostResponse):
@@ -101,17 +101,50 @@ def get_workout(date: str, request: Request):
     conn = sqlite3.connect("database.db")
     cursor = conn.cursor()
 
+    # this is me getting the name of the workout
     cursor.execute("SELECT name, id FROM workouts WHERE date = ?",
                    (date,))
     
-    data = cursor.fetchall()
-    print(data)
+    data = cursor.fetchone()
+    workout_title, workout_id = data[0], data[1]
+
+    # this is me getting all of the exercises whihc are linked to that workout by the id
+    cursor.execute("SELECT exercise, sets, reps, weight FROM exercises WHERE workout_id = ?",
+                   (workout_id,))
+    
+    exercises = cursor.fetchall()
+
     conn.close()
 
     return templates.TemplateResponse(
         "workouts.html",
-        {"request": request, "data": data, "date": date}
+        {"request": request, "workout": workout_title, "date": date, "exercises": exercises}
     )
+
+
+
+@app.get("/view-workouts")
+def view_workouts(request: Request):
+
+    conn = sqlite3.connect("database.db")
+    cursor = conn.cursor()
+    
+    cursor.execute("""SELECT *
+                    FROM workouts
+                    JOIN exercises ON exercises.workout_id = workouts.id""")
+    
+    data = cursor.fetchall()
+
+    cursor.execute("SELECT name, date, id  FROM workouts")
+    entries = cursor.fetchall()
+    
+    conn.close()
+
+    return templates.TemplateResponse(
+        "view_workouts.html",
+        {"request": request, "data": data, "entries": entries}
+    )
+    
     
     
 

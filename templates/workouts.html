@@ -8,7 +8,13 @@
 
 <body>
      <h1>These are your workouts for {{ date }}!!!</h1>
-    <button onclick="redirect('/workouts')">Go back to home page</button>
-    <script src="static/app.js"></script>
+     <h2>Workout: {{workout}}</h2>
+     <ul>
+        {% for ex in exercises %}
+            <li>{{ex}}</li>
+        {% endfor %}
+     </ul>
+    <button onclick="redirect('/')">Go back to home page</button>
+    <script src="/static/app.js"></script>
 </body>
 </html>

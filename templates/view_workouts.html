@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    {{ data }}
+    <h1>Completed Workouts</h1>
+    {% for entry in entries %}
+        <h2>{{ entry[0] }} : {{ entry[1 ]}}</h2>.  name, date, id
+        <ol> 
+            {% for exercise in data %}
+                {% if exercise[0] == entry[2] %}
+                    <li> {{ exercise[3] }} </li>
+                    <ul>
+                        <li>Sets: {{ exercise[4] }}</li>
+                        <li>Reps: {{ exercise[5 ]}} </li>
+                        <li>Weight: {{ exercise[6] }}</li>
+                    </ul>
+                {% endif %}
+            {% endfor %}
+        </ol>
+    {% endfor %}
+                    
+    
+</body>
+</html>
