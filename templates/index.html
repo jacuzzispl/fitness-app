@@ -21,10 +21,13 @@
         <input id="weight" type="number" placeholder="Weight" required disabled/>
 
     </form>
-        <button onclick="submitExercise()">A dd Exercise to Workout </button>
-        <button onlick="uploadFile()"> Attach Photos for Workout </button>
 
+    <button onclick="submitExercise()" type=" ">Add Exercise to Workout </button>
 
+    <form enctype="multipart/form-data">
+        <input type="file" id="fileInput" accept=".png, .jpeg, .jpg" multiple>
+        <input type="submit" value="Send" id="submitFiles">
+    </form>
 
     <button onclick="redirect('/view-workouts')">View Workouts</button>
 

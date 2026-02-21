@@ -1,8 +1,8 @@
-from fastapi import FastAPI, HTTPException, Depends, Request
+from fastapi import FastAPI, HTTPException, Depends, Request, UploadFile
 from fastapi.responses import FileResponse, HTMLResponse
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
-from typing import Literal, Union
+from typing import Literal, Union, Annotated
 from pydantic import BaseModel
 import sqlite3
 
@@ -137,13 +137,18 @@ def view_workouts(request: Request):
 
     cursor.execute("SELECT name, date, id  FROM workouts")
     entries = cursor.fetchall()
-    
+
     conn.close()
 
     return templates.TemplateResponse(
         "view_workouts.html",
         {"request": request, "data": data, "entries": entries}
     )
+
+@app.post("/uploads")
+async def handle_file_upload(file: UploadFile):
+    print("Received file")
+    return "OMD"
     
     
     

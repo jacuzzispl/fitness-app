@@ -1,6 +1,7 @@
 const formWorkout = document.getElementById("workoutForm");
 const formExercise = document.getElementById("exerciseForm");
 const formExerciseInputs = formExercise.querySelectorAll("input, button");
+const submitButton = document.getElementById("submitFiles")
 
 formWorkout.addEventListener("submit", (event) => {
     event.preventDefault();
@@ -12,6 +13,8 @@ formWorkout.addEventListener("submit", (event) => {
 
     formExerciseInputs.forEach(el => el.disabled = false);
 });
+
+submitButton.addEventListener("click", uploadFile)
 
 
 async function submitExercise() {
@@ -35,8 +38,6 @@ async function submitExercise() {
     console.log("Server response:", data);
 
 };
-
-
 
 
 
@@ -69,9 +70,17 @@ function redirect(url) {
 
 
 
-function async uploadFile() {
-    
-}
+async function uploadFile() {
+    const file = document.getElementById("fileInput").files[0]
+    var data = new FormData()
+    data.append("file", file)
+
+    fetch("/uploads", {
+        method: "POST",
+        body: data
+    })
+};
+
 
 
 
