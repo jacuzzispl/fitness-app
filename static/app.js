@@ -75,10 +75,13 @@ async function uploadFile() {
     var data = new FormData()
     data.append("file", file)
 
-    fetch("/uploads", {
+    const response = await fetch("/uploads", {
         method: "POST",
         body: data
     })
+
+    const data = await response.json()
+    alert(data);
 };
 
 

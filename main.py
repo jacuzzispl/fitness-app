@@ -1,14 +1,22 @@
-from fastapi import FastAPI, HTTPException, Depends, Request, UploadFile
+from fastapi import FastAPI, HTTPException, Depends, Request, UploadFile, File
 from fastapi.responses import FileResponse, HTMLResponse
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 from typing import Literal, Union, Annotated
 from pydantic import BaseModel
 import sqlite3
+import os, io, uuid
+from PIL import Image
 
 app = FastAPI()
 app.mount("/static", StaticFiles(directory="/Users/atunwa/fitness app/static"), name="static")
 templates = Jinja2Templates(directory="templates")
+
+upload_directory = "user-uploads"
+parent_directory = "/Users/atunwa/fitness app/static"
+
+path = os.path.join(parent_directory, upload_directory)
+os.makedirs(path, exist_ok=True)
 
 class Exercise(BaseModel):
     exercise: str
@@ -49,6 +57,13 @@ def init_db():
                    workout_id INTEGER NOT NULL,
                    FOREIGN KEY (workout_id) REFERENCES workouts(id)
                    )
+    """)
+
+    cursor.execute("""
+    CREATE TABLE IF NOT EXISTS files (
+                   filename TEXT NOT NULL,
+                   date TEXT NOT NULL)
+
     """)
 
     conn.commit()
@@ -146,9 +161,18 @@ def view_workouts(request: Request):
     )
 
 @app.post("/uploads")
-async def handle_file_upload(file: UploadFile):
-    print("Received file")
-    return "OMD"
+async def handle_file_upload(file: UploadFile = File(...)):
+    print(file)
+    file_bytes = await file.read()
+    filename = f"{uuid.uuid4()}.jpg"
+    image = Image.open(io.BytesIO(file_bytes))
+    image = image.rotate(45)
+    filepath = os.path.join(path, filename)
+    image.save(filepath)
+
+    # Now i need to add the filename to database
+
+    return "got"
     
     
     
