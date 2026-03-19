@@ -21,9 +21,9 @@ os.makedirs(path, exist_ok=True)
 
 class Exercise(BaseModel):
     exercise: str
-    sets: int = 0
-    reps: int = 0
-    weight: int = 0
+    sets: int 
+    reps: int 
+    weight: int
     type: Literal["Exercise"]
 
 
