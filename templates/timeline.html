@@ -1,0 +1,13 @@
+<h1>Images!!!</h1>
+
+{% for date in dates %}
+    <h2>Photos for date: {{ date }}</h2>
+    {% for file in filepaths %}
+        {% if file[1] == date %}
+            <p>{{file[0]}}</p>
+            <img src="{{file[0]}}">
+        {% endif %}
+    {% endfor %}
+{% endfor %}
+
+<button onclick="location.href = 'http://127.0.0.1:8000' ">Go Back</button>

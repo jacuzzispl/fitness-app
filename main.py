@@ -5,7 +5,7 @@ from fastapi.templating import Jinja2Templates
 from typing import Literal, Union, Annotated
 from pydantic import BaseModel
 import sqlite3
-import os, io, uuid
+import os, io, uuid, datetime
 from PIL import Image
 
 app = FastAPI()
@@ -17,6 +17,7 @@ parent_directory = "/Users/atunwa/fitness app/static"
 
 path = os.path.join(parent_directory, upload_directory)
 os.makedirs(path, exist_ok=True)
+
 
 class Exercise(BaseModel):
     exercise: str
@@ -62,7 +63,8 @@ def init_db():
     cursor.execute("""
     CREATE TABLE IF NOT EXISTS files (
                    filename TEXT NOT NULL,
-                   date TEXT NOT NULL)
+                   date TEXT NOT NULL
+                   )
 
     """)
 
@@ -95,7 +97,7 @@ def add_workout(data: PostResponse):
         print("This is an exercise entry")
         cursor.execute("SELECT MAX(id) FROM workouts")
         row = cursor.fetchone()
-        workout_id = row[0] if row and row[0] is not None else 0
+        workout_id = row[0] if row and row[0] is not None else 0 #what does this line even do
         cursor.execute("INSERT INTO exercises (exercise, sets, reps, weight, workout_id) VALUES (?,?,?,?,?)",
             (data.exercise, data.sets, data.reps, data.weight, workout_id))
         
@@ -141,6 +143,8 @@ def get_workout(date: str, request: Request):
 @app.get("/view-workouts")
 def view_workouts(request: Request):
 
+    print("This was accessed")
+
     conn = sqlite3.connect("database.db")
     cursor = conn.cursor()
     
@@ -163,16 +167,53 @@ def view_workouts(request: Request):
 @app.post("/uploads")
 async def handle_file_upload(file: UploadFile = File(...)):
     print(file)
+    user_upload_directory = "/Users/atunwa/fitness app/static/user-uploads"
+    os.makedirs(user_upload_directory, exist_ok=True)
+
     file_bytes = await file.read()
-    filename = f"{uuid.uuid4()}.jpg"
+
     image = Image.open(io.BytesIO(file_bytes))
-    image = image.rotate(45)
-    filepath = os.path.join(path, filename)
+    image = image.resize((150,150))
+
+    filename = f"{uuid.uuid4()}.jpg"
+    filepath = f"{user_upload_directory}/{filename}"
+    print(filename)
     image.save(filepath)
 
-    # Now i need to add the filename to database
+    filename = f"/static/user-uploads/{filename}"
+
+    date = datetime.datetime.now().strftime("%d-%m-%y")
+
+    conn = sqlite3.connect("database.db")
+    cursor = conn.cursor()
+
+    cursor.execute("INSERT INTO files (filename, date) VALUES (?,?)",
+                   (filename, date))
+    
+    conn.commit()
+    conn.close()
 
     return "got"
+
+@app.get("/timeline")
+def timeline(request: Request):
+    conn = sqlite3.connect("database.db")
+    cursor = conn.cursor()
+
+    cursor.execute("SELECT * FROM files")
+    filepaths = cursor.fetchall()
+    dates = list(set([i[1] for i in filepaths]))
+
+
+    print(filepaths)
+    print(dates)
+
+    return templates.TemplateResponse(
+        "timeline.html",
+        {"request": request, "filepaths": filepaths, "dates": dates}
+    )
+
+
     
     
     

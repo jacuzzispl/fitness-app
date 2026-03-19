@@ -1,20 +1,18 @@
 const formWorkout = document.getElementById("workoutForm");
 const formExercise = document.getElementById("exerciseForm");
 const formExerciseInputs = formExercise.querySelectorAll("input, button");
-const submitButton = document.getElementById("submitFiles")
+const submitButton = document.getElementById("submitFiles");
 
-formWorkout.addEventListener("submit", (event) => {
-    event.preventDefault();
 
-    if (!formWorkout.checkValidity()) {
-        formWorkout.reportValidity();
-        return;
-    }
+function redirect(url) {
+     window.location.href = url
+}
 
-    formExerciseInputs.forEach(el => el.disabled = false);
-});
 
-submitButton.addEventListener("click", uploadFile)
+submitButton.addEventListener("click", function(e) {
+    e.preventDefault();
+    uploadFile();
+})
 
 
 async function submitExercise() {
@@ -33,9 +31,6 @@ async function submitExercise() {
         headers: { "Content-Type" : "application/json" },
         body: JSON.stringify(exercise)
     });
-
-    const data = await response.json();
-    console.log("Server response:", data);
 
 };
 
@@ -64,12 +59,6 @@ async function submitWorkout() {
 
 
 
-function redirect(url) {
-    window.location.href = url
-}
-
-
-
 async function uploadFile() {
     const file = document.getElementById("fileInput").files[0]
     var data = new FormData()
@@ -80,8 +69,8 @@ async function uploadFile() {
         body: data
     })
 
-    const data = await response.json()
-    alert(data);
+    const data_response = await response.json()
+    alert(data_response);
 };
 
 

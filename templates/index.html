@@ -15,11 +15,10 @@
 
     <h2>Exercise</h2>
     <form id="exerciseForm">
-        <input id="exerciseName" placeholder="Exercise Name" required disabled/>
-        <input id="sets" type="number" placeholder="Sets" required disabled/>
-        <input id="reps" type="number" placeholder="Reps" required disabled/>
-        <input id="weight" type="number" placeholder="Weight" required disabled/>
-
+        <input id="exerciseName" placeholder="Exercise Name"/>
+        <input id="sets" type="number" placeholder="Sets"/>
+        <input id="reps" type="number" placeholder="Reps"/>
+        <input id="weight" type="number" placeholder="Weight"/>
     </form>
 
     <button onclick="submitExercise()" type=" ">Add Exercise to Workout </button>
@@ -31,6 +30,8 @@
 
     <button onclick="redirect('/view-workouts')">View Workouts</button>
 
-    <script src="/static/app.js"></script>
+    <button onclick="redirect('/timeline')">See Timeline</button>
+
+    <script src="static/app.js"></script>
 </body>
 </html>
