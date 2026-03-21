@@ -24,13 +24,15 @@
     <button onclick="submitExercise()" type=" ">Add Exercise to Workout </button>
 
     <form enctype="multipart/form-data">
-        <input type="file" id="fileInput" accept=".png, .jpeg, .jpg" multiple>
+        <input type="file" id="fileInput" accept=".png, .jpeg, .jpg">
         <input type="submit" value="Send" id="submitFiles">
     </form>
 
     <button onclick="redirect('/view-workouts')">View Workouts</button>
 
     <button onclick="redirect('/timeline')">See Timeline</button>
+
+    <button onclick="redirect('/external-wearable')">Add Garmin Data</button>
 
     <script src="static/app.js"></script>
 </body>

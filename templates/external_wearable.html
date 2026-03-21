@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width", initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h2>Connect to Garmin Device</h2>
+    <form id="garminFormData" onsubmit="return false">
+        <label>Username: <input type="text" id="username" name="username" /></label>
+        <br/>
+        <label>Password: <input type="text" id="password" name="password" placeholder="password"/></label>
+        <button type="submit">Connect to Garmin API </button>
+    </form>
+
+
+    <script>
+        const form = document.getElementById("garminFormData");
+
+        async function logSubmit(event) {
+            var formData = new FormData(form);
+            const response = await fetch("/external-wearable",
+                {
+                    method: "POST",
+                    body: formData
+                }
+            )
+
+            const data = await response.json()
+            alert("okay")
+            alert(data)
+            event.preventDefault();
+        }
+
+        form.addEventListener("submit", logSubmit)
+    </script>
+</body>
+</html>

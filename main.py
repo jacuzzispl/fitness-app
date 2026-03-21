@@ -1,4 +1,4 @@
-from fastapi import FastAPI, HTTPException, Depends, Request, UploadFile, File
+from fastapi import FastAPI, HTTPException, Depends, Request, UploadFile, File, Form
 from fastapi.responses import FileResponse, HTMLResponse
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
@@ -7,6 +7,8 @@ from pydantic import BaseModel
 import sqlite3
 import os, io, uuid, datetime
 from PIL import Image
+
+# I think a cool idea would be to be able to take pictures of your meal and then somehow with 
 
 app = FastAPI()
 app.mount("/static", StaticFiles(directory="/Users/atunwa/fitness app/static"), name="static")
@@ -31,6 +33,11 @@ class Workout(BaseModel):
     name: str
     date: str
     type: Literal["Workout"]
+
+class GarminFormData(BaseModel):
+    username: str
+    password: str
+    model_config = {"extra": "forbid"}
 
 PostResponse = Union[Exercise, Workout]
 
@@ -212,6 +219,18 @@ def timeline(request: Request):
         "timeline.html",
         {"request": request, "filepaths": filepaths, "dates": dates}
     )
+
+@app.get('/external-wearable')
+def externable_wearable(request:Request):
+    return templates.TemplateResponse(
+        "external_wearable.html",
+        {"request" : request}
+    )
+
+@app.post('/external-wearable')
+async def user_information_external_wearable(data : Annotated[GarminFormData, Form()]):
+    print(data.username)
+    return "received"
 
 
     

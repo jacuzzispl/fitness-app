@@ -8,7 +8,6 @@ function redirect(url) {
      window.location.href = url
 }
 
-
 submitButton.addEventListener("click", function(e) {
     e.preventDefault();
     uploadFile();
@@ -16,7 +15,7 @@ submitButton.addEventListener("click", function(e) {
 
 
 async function submitExercise() {
-    console.log("Successful - Exercise")
+    console.log("Successful - Exercise");
     const exercise = {
                 exercise: document.getElementById("exerciseName").value,
                 sets: Number(document.getElementById("sets").value),
@@ -72,6 +71,8 @@ async function uploadFile() {
     const data_response = await response.json()
     alert(data_response);
 };
+
+
 
 
 
