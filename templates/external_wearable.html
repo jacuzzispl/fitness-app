@@ -7,16 +7,29 @@
 </head>
 <body>
     <h2>Connect to Garmin Device</h2>
-    <form id="garminFormData" onsubmit="return false">
-        <label>Username: <input type="text" id="username" name="username" /></label>
+    <form id="garminJSONFormData" onsubmit="return false">
+        <label>Username: <input type="text" id="username" name="username" placeholder="Username / Email" /></label>
         <br/>
-        <label>Password: <input type="text" id="password" name="password" placeholder="password"/></label>
+        <label>Password: <input type="text" id="password" name="password" placeholder="Password"/></label>
+        <br/>
+        <label>Start Date: <input type="text" id="garminDataStartDate" placeholder="Start Date"/></label>
+        <p>Depending on how far back you set you start date, fetching your data can take a while.</p>
+
+        <br/>
+        <br/>
+
+        <h3>What statistics would you like to fetch?</h3>
+        <ul>
+            <li><input type="checkbox" name="ChooseMonitoring" id="ChooseMonitoring">  Monitoring</li>
+            <li><input type="checkbox" name="ChooseSteps" id="ChooseSteps">  Steps</li>
+        </ul>
+
         <button type="submit">Connect to Garmin API </button>
     </form>
 
 
     <script>
-        const form = document.getElementById("garminFormData");
+        const form = document.getElementById("garminJSONFormData");
 
         async function logSubmit(event) {
             var formData = new FormData(form);

@@ -4,3 +4,5 @@ __pycache__/
 node_modules/
 *.pyc
 database.db
+user-uploads/
+garmin_databases/
