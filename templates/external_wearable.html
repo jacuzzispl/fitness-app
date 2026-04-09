@@ -12,17 +12,9 @@
         <br/>
         <label>Password: <input type="text" id="password" name="password" placeholder="Password"/></label>
         <br/>
-        <label>Start Date: <input type="text" id="garminDataStartDate" placeholder="Start Date"/></label>
-        <p>Depending on how far back you set you start date, fetching your data can take a while.</p>
+        <label>Start Date: <input type="text" id="garminDataStartDate" name="garminDataStartDate" placeholder="DD/MM/YYYY"/></label>
 
         <br/>
-        <br/>
-
-        <h3>What statistics would you like to fetch?</h3>
-        <ul>
-            <li><input type="checkbox" name="ChooseMonitoring" id="ChooseMonitoring">  Monitoring</li>
-            <li><input type="checkbox" name="ChooseSteps" id="ChooseSteps">  Steps</li>
-        </ul>
 
         <button type="submit">Connect to Garmin API </button>
     </form>
@@ -33,6 +25,9 @@
 
         async function logSubmit(event) {
             var formData = new FormData(form);
+            for(let [name, value] of formData) {
+                alert(`${name} = ${value}`); // key1 = value1, then key2 = value2
+            }
             const response = await fetch("/external-wearable",
                 {
                     method: "POST",

@@ -1,0 +1,4 @@
+INFO:idbutils.db_object:Creating table class summary base <class 'idbutils.key_value.KeyValueObject'> version 1 cols {} in db <class 'types.summaryDb'>
+INFO:idbutils.db_object:Creating table class summary base <class 'idbutils.key_value.KeyValueObject'> version 1 cols {} in db <class 'types.garmin_summaryDb'>
+INFO:/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/site-packages/garmindb/plugin_manager.py:Loading GarminDb plugins from /Users/ade/HealthData/Plugins
+INFO:/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/site-packages/idbutils/plugin.py:Loading plugins from /Users/ade/HealthData/Plugins

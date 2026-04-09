@@ -7,8 +7,8 @@ from pydantic import BaseModel
 import sqlite3
 import os, io, uuid, datetime, json
 from PIL import Image
-from GarminDB.scripts import garmindb_cli
-from GarminDB.garmindb import Statistics
+import garminconnect as gc
+
 
 # I think a cool idea would be to be able to take pictures of your meal and then somehow with 
 
@@ -17,7 +17,7 @@ app.mount("/static", StaticFiles(directory="static"), name="static")
 templates = Jinja2Templates(directory="templates")
 
 upload_directory = "user-uploads"
-parent_directory = "/Users/ade/atunwa/Projects/fitness app/static"
+parent_directory = "/Users/ade/atunwa/Projects/fitness-app/static"
 
 path = os.path.join(parent_directory, upload_directory)
 os.makedirs(path, exist_ok=True)
@@ -39,6 +39,8 @@ class Workout(BaseModel):
 class GarminFormData(BaseModel):
     username: str
     password: str
+    garminDataStartDate: str
+
     
     model_config = {"extra": "forbid"}
 
@@ -96,7 +98,7 @@ def get_db():
 @app.get("/")
 def home():
     init_db()
-    return FileResponse("/Users/ade/atunwa/Projects/fitness app/templates/index.html")
+    return FileResponse("templates/index.html")
 
 @app.post("/workouts")
 def add_workout(data: PostResponse):
@@ -231,45 +233,21 @@ def externable_wearable(request:Request):
     )
 
 @app.post('/external-wearable')
-async def user_information_external_wearable(data : Annotated[GarminFormData, Form()]):
+async def user_information_external_wearable(data : Annotated[GarminFormData, Form()], request: Request):
 
-    external_user_data_path = os.path.join("static/external_user_data", "GarminUserData.json")
-    with open('garmin.json', 'r+') as file:
-        try:
-            content = json.load(file)
-        except json.decoder.JSONDecodeError as e:
-            return "Failed to load JSON File. Reload and try again."
-  
-        except FileNotFoundError as e:
-            return "File does not exist."
-        
-        print(content['credentials']['user'])
-        content['credentials']['user'] = data.username
-        content['credentials']['password'] = data.password
+    client = gc.Garmin(data.username, data.password)
+    try:
+        client.login()
+        user_data = client.get_steps_data(data.garminDataStartDate)
+    except Exception as e:
+        print(f"error: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
 
-    with open(external_user_data_path, "w+") as file:
-        json.dump(content, file, indent=2)
 
-    garminDbMain = garmindb_cli.GarminDbMain(None) 
-    stats = garminDbMain.gc_config.enabled_stats()
-    stats = Stat
-    print(stats)
-
-    #Overall I think the db thats going to end uo being the most useful is the summary.db, garmin.db and garmin_activities.db
-                                                
-
-    #This is the list of all the stats that we can measure:
-    #       - monitoring: This includes things like Heart Rate, Heart Rate Variation, Respiration Rate, Pulse_Ox etc
-    #       - steps
-    #       - itime: which i am assuming is how long you spend doing intense exercise
-    #       - sleep: hours slept
-    #       - RHR
-    #       - weight
-    #       - activities: i think this includes information about various activities like climbing, paddling, cycling if they're that
-    #                     kind of person. 
-    # I think it also is important to preface that the more of these the user wants to download the longer it will take.
-    return stats
-           
+    return templates.TemplateResponse(
+        "user_data.html",
+        {"request": request, "data": user_data}
+    )
 
 
     

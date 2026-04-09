@@ -8,8 +8,13 @@
   "credentials": {
     "user": "hi",
     "secure_password": false,
-    "password": "hey hey",
-    "password_file": null
+    "password": "hey",
+    "password_file": null,
+    "weight_start_date": "hello",
+    "sleep_start_date": "hello",
+    "rhr_start_date": "hello",
+    "hrv_start_date": "hello",
+    "monitoring_start_date": "hello"
   },
   "data": {
     "weight_start_date": "12/31/2019",
