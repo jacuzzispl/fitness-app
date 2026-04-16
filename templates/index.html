@@ -3,37 +3,82 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <style>
+
+        .btn {
+            @apply px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600;
+        }
+
+        h1>span {
+            text-wrap: wrap;  
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            animation: gradient 15s ease infinite;
+            -webkit-box-decoration: clone;
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: #0000
+          
+        }
+
+        @keyframes gradient {
+            0% {
+                background-position: 0% 50%;
+            }
+
+            50% {
+                background-position: 100% 50%;
+            }
+            100% {
+                background-position: 100% 50%;
+            }
+        }
+
+        
+        @theme {
+            --color-clifford: #da373d;
+        }
+    </style>
     <title>Fitness App</title>
 </head>
 <body>
-    <h1>Add workout</h1>
-    <form id="workoutForm">
-        <input id="workoutName" placeholder="Workout Name" required/>
-        <input id="workoutDate" type="date" required/>
-        <button onclick="submitWorkout()">Create Workout</button>
-    </form>
+    <div class="content flex-col text-center">
+        <h1 class= "font-bold text-3xl headline">
+            Name of <span>THIS BEAUTIFUL</span> app
+        </h1>
+        <h2 class="text-red font-bold text-xl pb-5">Add workout</h2>
+        <div class="user-configuration outline-solid">
+            <form id="workoutForm">
+                <input id="workoutName" placeholder="Workout Name" class="btn" required/>
+                <input id="workoutDate" type="date" required/>
+                <button onclick="submitWorkout()">Create Workout</button>
+            </form>
 
-    <h2>Exercise</h2>
-    <form id="exerciseForm">
-        <input id="exerciseName" placeholder="Exercise Name"/>
-        <input id="sets" type="number" placeholder="Sets"/>
-        <input id="reps" type="number" placeholder="Reps"/>
-        <input id="weight" type="number" placeholder="Weight"/>
-    </form>
+            <h2>Exercise</h2>
+            <form id="exerciseForm">
+                <input id="exerciseName" placeholder="Exercise Name"/>
+                <input id="sets" type="number" placeholder="Sets"/>
+                <input id="reps" type="number" placeholder="Reps"/>
+                <input id="weight" type="number" placeholder="Weight"/>
+            </form>
 
-    <button onclick="submitExercise()" type=" ">Add Exercise to Workout </button>
+            <button onclick="submitExercise()" type=" ">Add Exercise to Workout </button>
 
-    <form enctype="multipart/form-data">
-        <input type="file" id="fileInput" accept=".png, .jpeg, .jpg">
-        <input type="submit" value="Send" id="submitFiles">
-    </form>
+            <form enctype="multipart/form-data">
+                <input type="file" id="fileInput" accept=".png, .jpeg, .jpg">
+                <input type="submit" value="Send" id="submitFiles">
+            </form>
 
-    <button onclick="redirect('/view-workouts')">View Workouts</button>
+            <button onclick="redirect('/view-workouts')">View Workouts</button>
 
-    <button onclick="redirect('/timeline')">See Timeline</button>
+            <button onclick="redirect('/timeline')">See Timeline</button>
 
-    <button onclick="redirect('/external-wearable')">Add Garmin Data</button>
+            <button onclick="redirect('/external-wearable')">Add Garmin Data</button>
 
-    <script src="static/app.js"></script>
+            <script src="static/app.js"></script>
+        </div>
+        
+    </div>
+    
 </body>
 </html>

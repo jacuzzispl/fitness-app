@@ -3,4 +3,11 @@
 
 <p>{{user_data}}</p>
 
-<script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+<script src="https://cdn.plot.ly/plotly-latest.min.js">
+    Plotly.newPlot('chart', [{
+  x: user_data.map(d => d.date),
+  y: user_data.map(d => d.heart_rate),
+  type: 'scatter',
+  mode: 'lines'
+}]);
+</script>
